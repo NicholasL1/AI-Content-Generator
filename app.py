@@ -1,3 +1,13 @@
+from flask import Flask, request
+from flask_cors import CORS
+import json
+
+# Loading environment variables
+import os
+from dotenv import load_dotenv
+load_dotenv()
+openai_api_key = os.environ.get('openai_api_key')
+cohere_api_key = os.environ.get('cohere_api_key')
 qdrant_url = os.environ.get('qdrant_url')
 qdrant_api_key = os.environ.get('qdrant_api_key')
 
