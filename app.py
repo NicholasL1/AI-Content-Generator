@@ -1,26 +1,16 @@
-from flask import Flask, request
-from flask_cors import CORS
-import json
-
-# Loading environment variables
-import os
-from dotenv import load_dotenv
-load_dotenv()
-openai_api_key = os.environ.get('openai_api_key')
-cohere_api_key = os.environ.get('cohere_api_key')
 qdrant_url = os.environ.get('qdrant_url')
 qdrant_api_key = os.environ.get('qdrant_api_key')
 
-# Flask config
+#Flask config
 app = Flask(__name__)
 CORS(app)
 
 # Test default route
 @app.route('/')
 def hello_world():
-    return {"Hello": "World"}
+    return {"Hello":"World"}
 
-# Embedding code
+## Embedding code
 from langchain.embeddings import CohereEmbeddings
 from langchain.document_loaders import PyPDFLoader
 from langchain.vectorstores import Qdrant
@@ -52,8 +42,7 @@ def retrieve_info():
     embeddings = CohereEmbeddings(model="multilingual-22-12", cohere_api_key=cohere_api_key)
     qdrant = Qdrant(client=client, collection_name=collection_name, embedding_function=embeddings.embed_query)
     search_results = qdrant.similarity_search(query, k=2)
-    # Specify the new model name
-    chain = load_qa_chain(OpenAI(model_name="gpt-3.5-turbo", openai_api_key=openai_api_key, temperature=0.2), chain_type="stuff")
+    chain = load_qa_chain(OpenAI(model_name="gpt-3.5-turbo", openai_api_key=openai_api_key,temperature=0.2), chain_type="stuff")
     results = chain({"input_documents": search_results, "question": query}, return_only_outputs=True)
     
-    return {"results": results["output_text"]}
+    return {"results":results["output_text"]}
