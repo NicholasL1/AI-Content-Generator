@@ -35,7 +35,7 @@ def embed_pdf():
     embeddings = CohereEmbeddings(model="multilingual-22-12", cohere_api_key=cohere_api_key)
     qdrant = Qdrant.from_documents(docs, embeddings, url=qdrant_url, collection_name=collection_name, prefer_grpc=True, api_key=qdrant_api_key)
     
-    return {"collection_name": qdrant.collection_name}
+    return {"collection_name":qdrant.collection_name}
 
 # Retrieve information from a collection
 from langchain.chains.question_answering import load_qa_chain
